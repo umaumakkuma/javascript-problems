@@ -19,6 +19,8 @@ const filterNumbers = process.argv.slice(2);
 const categories = fs
     .readdirSync(baseDir)
     .filter((name) => /^\d{2}-/.test(name))
+    // 00-tutorialは回答済みの状態で配布するチュートリアルなので集計対象外
+    .filter((name) => !name.startsWith("00-"))
     .filter((name) => fs.statSync(path.join(baseDir, name)).isDirectory())
     .filter((name) => filterNumbers.length === 0 || filterNumbers.includes(name.slice(0, 2)))
     .sort();
