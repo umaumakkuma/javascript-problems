@@ -1,7 +1,7 @@
 # JavaScript実技テスト
 
 ## 🎯 テスト概要
-各カテゴリに5問ずつ、計90問のJavaScript問題です。
+各カテゴリに5問ずつ、計105問のJavaScript問題です。
 
 カテゴリ07以降は、信頼性の高いJavaScript入門書 [JavaScript Primer](https://jsprimer.net/)（jsprimer）の第一部「基本文法」に準拠しています。各問題のコメントに、対応するjsprimerの章へのリンクを記載しているので、解けない場合はまず該当章を読んでから挑戦してください。
 
@@ -15,7 +15,7 @@
 - `05-es6-modern/` - ES6+モダン記法
 - `06-error-handling-debug/` - エラーハンドリング・デバッグ
 
-### 基本文法編（07〜18） — JavaScript Primer 第一部準拠
+### 基本文法編（07〜21） — JavaScript Primer 第一部準拠
 - `07-data-types-literals/` - データ型とリテラル（[jsprimer: データ型とリテラル](https://jsprimer.net/basic/data-type/)）
 - `08-operators-coercion/` - 演算子と暗黙的な型変換（[jsprimer: 演算子](https://jsprimer.net/basic/operator/) / [暗黙的な型変換](https://jsprimer.net/basic/implicit-coercion/)）
 - `09-objects/` - オブジェクト（[jsprimer: オブジェクト](https://jsprimer.net/basic/object/)）
@@ -28,6 +28,10 @@
 - `16-map-set/` - Map/Set（[jsprimer: Map/Set](https://jsprimer.net/basic/map-and-set/)）
 - `17-json-date-math/` - JSON/Date/Math（[jsprimer: JSON](https://jsprimer.net/basic/json/) / [Date](https://jsprimer.net/basic/date/) / [Math](https://jsprimer.net/basic/math/)）
 - `18-iterator-generator/` - イテレータとジェネレータ（[jsprimer: イテレータとジェネレータ](https://jsprimer.net/basic/iterator-generator/)）
+- `19-prototype/` - プロトタイプオブジェクト（[jsprimer: プロトタイプオブジェクト](https://jsprimer.net/basic/prototype-object/)）
+- `20-wrapper-objects/` - ラッパーオブジェクト（[jsprimer: ラッパーオブジェクト](https://jsprimer.net/basic/wrapper-object/)）
+- `21-es-modules/` - ECMAScriptモジュール（[jsprimer: ECMAScriptモジュール](https://jsprimer.net/basic/module/)）
+  - ※ このカテゴリのみ、import/exportを動かすためファイルが `.mjs` 形式です。問題3は `lib/my-module.mjs` に回答を記述します
 
 ## 🚀 実施方法
 1. このリポジトリをフォーク
@@ -38,7 +42,7 @@
 ## ⏱️ 目安時間
 - 各問題: 5-15分
 - 入門編（01〜06）: 2-3時間
-- 基本文法編（07〜18）: 8-10時間
+- 基本文法編（07〜21）: 10-12時間
 - **できる範囲で進めてください**
 
 ## 💡 動作確認方法
@@ -51,6 +55,19 @@ node 01-basic-syntax/problem1.js
 ```
 
 各問題ファイルの末尾には「動作確認用のコード」があり、実行すると期待値と結果を照らし合わせられます。`❌ エラー:` が表示される場合は回答が未記入か、間違っています。
+
+### 回答状況の一括チェック
+
+`check.js` で全問題の回答状況をまとめて確認できます:
+
+```bash
+cd basic
+node check.js        # 全カテゴリを集計
+node check.js 07 19  # カテゴリ番号を指定して集計
+```
+
+- `✅` 回答済み / `❌` 未回答・誤答 / `💥` 実行時クラッシュ（構文エラーの可能性）
+- `📝` は自動判定できない問題（出力の目視確認や、ブラウザでの動作確認が必要）です。ファイルを個別に実行して確認してください
 
 ## 📚 参考資料
 - [JavaScript Primer](https://jsprimer.net/) - カテゴリ07以降の準拠元。迷ったらまずここを読む

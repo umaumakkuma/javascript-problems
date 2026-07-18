@@ -18,7 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 カテゴリ07以降のコンテンツは [JavaScript Primer](https://jsprimer.net/)（jsprimer）に準拠している。問題を追加・改修する際はjsprimerの該当章と整合させ、問題コメントに【参考】として章のURLを記載する。
 
-- `basic/` — 穴埋め問題90問（18カテゴリ × 5問）。01〜06は入門編、07〜18はjsprimer第一部準拠
+- `basic/` — 穴埋め問題105問（21カテゴリ × 5問）。01〜06は入門編、07〜21はjsprimer第一部準拠
 - `advanced/` — jsprimer第二部準拠の実技課題3本（01-ajaxapp / 02-nodecli / 03-todoapp）。複数ファイル構成のアプリを段階的に完成させる
 
 ## 最重要の制約: 解答をコミットしない
@@ -30,6 +30,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 # basic/ の問題を実行（未回答でもクラッシュせず ❌ エラー案内が出るのが正常）
 node basic/07-data-types-literals/problem1.js
+
+# basic/ の回答状況を一括チェック（✅回答済み/❌未回答/💥クラッシュ/📝手動確認）
+cd basic && node check.js        # カテゴリ番号指定も可: node check.js 07 19
 
 # advanced/02-nodecli のテスト（初回は npm install が必要）
 cd advanced/02-nodecli && npm install && npm test
@@ -51,6 +54,11 @@ cd advanced/01-ajaxapp && npx serve .
 1. **ヘッダーコメント**: `カテゴリ名 / 問題N: タイトル` +【課題】【要求事項】【参考】(jsprimerのURL)【目安時間】
 2. **回答欄**: `// ========== ここから回答を記述 ==========` 〜 `// ========== ここまで回答を記述 ==========` のマーカーで囲み、中身は `// ここに回答を記述してください` のみ
 3. **動作確認コード**: `変更不要` と明記し、try-catchで囲む。回答済みなら期待値をコメントで示しつつ `✅`、未回答なら `❌ エラー:` を出力する。**未回答状態で実行してもプロセスがクラッシュしないこと**（非同期の問題は動作確認コード側でawait+try-catchする）
+
+例外・注意点:
+
+- `21-es-modules` のみ `.mjs` 形式（import/exportをNodeで動かすため）。提供モジュールは `lib/` に置き、`check.js` の走査対象（`problem数字.js|mjs`）に含めない命名にする。ESMはstrict modeなので、非strict前提の問題（`20-wrapper-objects/problem4` のプリミティブへのプロパティ代入など）は `.js` でしか成立しない
+- `03-dom-manipulation` などブラウザ向け問題のNode実行はモックのデモを動かすだけで、**回答の正誤に関係なく✅を表示する**。`check.js` はこれを検出して📝（手動確認）に分類している。新規のブラウザ向け問題でこの形式を踏襲する場合、出力に「ブラウザ環境で実行」の文言を含めること
 
 ## advanced/ の課題の規約
 
