@@ -1,0 +1,14 @@
+{
+  "name": "nodecli",
+  "version": "1.0.0",
+  "description": "MarkdownをHTMLに変換するCLIツール（jsprimer準拠の実技課題）",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "private": true,
+  "dependencies": {
+    "marked": "^15.0.12"
+  }
+}
