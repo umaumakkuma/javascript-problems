@@ -56,4 +56,8 @@ node 01-basic-syntax/problem1.js
 - [JavaScript Primer](https://jsprimer.net/) - カテゴリ07以降の準拠元。迷ったらまずここを読む
 - [MDN Web Docs](https://developer.mozilla.org/ja/) - JavaScriptのリファレンス
 
+## 🔥 次のステップ
+基本文法編を終えたら、[応用編（../advanced/）](../advanced/README.md)に進んでください。
+JavaScript Primer 第二部準拠の、実際に動くアプリケーションを作る実技課題です。
+
 本問題集のカテゴリ07〜18は [JavaScript Primer](https://jsprimer.net/)（© azu, Suguru Inatomi / [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)）の内容を参考に作成しています。

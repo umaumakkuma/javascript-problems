@@ -1,0 +1,10 @@
+{
+  "name": "todoapp",
+  "version": "1.0.0",
+  "description": "Todoアプリ（jsprimer準拠の実技課題）",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "private": true
+}
