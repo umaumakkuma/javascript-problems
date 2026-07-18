@@ -47,6 +47,14 @@ cd advanced/03-todoapp && npm test
 
 4. 完了後、フォークしたリポジトリにプッシュして提出
 
+## 🤖 pushするたびに自動採点（GitHub Actions）
+
+フォーク先のリポジトリで **Actionsタブを開いて有効化**（初回に1回ボタンを押すだけ）すると、pushのたびに自動採点が実行されます:
+
+- **basic/ 回答状況** — `check.js` の集計表がActionsの実行結果ページ（サマリー）に表示されます
+- **advanced/ 自動採点** — `npm test` のpass件数が表示されます
+- 未回答があっても失敗にはなりません。**回答がクラッシュする（構文エラーなど）ときだけ赤バツ**が付くので、壊れたコードの提出を防げます
+
 ## 📚 ライセンス・出典
 
 本問題集の `basic/` カテゴリ07以降と `advanced/` は [JavaScript Primer](https://jsprimer.net/)（文章: © azu, Suguru Inatomi / [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)、ソースコード: [MITライセンス](https://github.com/js-primer/js-primer/blob/master/LICENSE-MIT)）を元に作成しています。

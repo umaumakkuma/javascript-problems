@@ -1,0 +1,105 @@
+# 自動採点と、テンプレートの健全性チェック
+#
+# - basic-check / advanced-test: 学習者向けの自動フィードバック。
+#   フォークへのpushでも動作する（フォーク側でActionsの有効化が必要）。
+#   未回答があっても失敗にはせず、回答のクラッシュ（構文エラー等）のみ赤にする。
+# - template-integrity: 本体リポジトリ保守用。未回答テンプレートが壊れて
+#   いないこと・解答がコミットされていないことを Node 20/22/24 で検証する。
+name: 採点チェック
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  basic-check:
+    name: basic/ 回答状況
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 全問題を一括チェック
+        run: |
+          status=0
+          node basic/check.js > result.txt 2>&1 || status=$?
+          cat result.txt
+          {
+            echo "## 📋 basic/ 回答状況"
+            echo ""
+            echo '```'
+            cat result.txt
+            echo '```'
+            echo ""
+            echo "> ❌は未回答・誤答、📝は手動確認の問題です。💥（クラッシュ）があるときだけ、このジョブは失敗になります。"
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"
+
+  advanced-test:
+    name: advanced/ 自動採点
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 02-nodecli のテスト
+        working-directory: advanced/02-nodecli
+        run: |
+          npm ci --no-audit --no-fund
+          npm test > result.txt 2>&1 || true
+          cat result.txt
+          {
+            echo "## 🧪 advanced/ 自動採点"
+            echo ""
+            echo "### 02-nodecli"
+            echo ""
+            echo '```'
+            grep -E "^# (tests|pass|fail)" result.txt || echo "テスト結果を取得できませんでした"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: 03-todoapp のテスト
+        working-directory: advanced/03-todoapp
+        run: |
+          npm test > result.txt 2>&1 || true
+          cat result.txt
+          {
+            echo "### 03-todoapp"
+            echo ""
+            echo '```'
+            grep -E "^# (tests|pass|fail)" result.txt || echo "テスト結果を取得できませんでした"
+            echo '```'
+            echo ""
+            echo "> 未回答の段階でテストがfailするのは正常です。実装が進むとpass件数が増えていきます。"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # 本体リポジトリ専用: フォーク（学習者の回答リポジトリ）では実行しない
+  template-integrity:
+    name: テンプレート健全性 (Node ${{ matrix.node-version }})
+    if: github.repository == 'umaumakkuma/javascript-problems'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: 未回答テンプレートがクラッシュしないこと
+        run: |
+          node basic/check.js > result.txt 2>&1
+          cat result.txt
+      - name: 解答がコミットされていないこと
+        run: |
+          if ! grep -q "回答済み: 0/" result.txt; then
+            echo "::error::回答済みの問題が検出されました。テンプレートには解答をコミットしないでください（CLAUDE.md参照）。"
+            exit 1
+          fi
+      - name: advanced/ の依存関係とテストハーネスが動くこと
+        run: |
+          (cd advanced/02-nodecli && npm ci --no-audit --no-fund && (npm test || true))
+          (cd advanced/03-todoapp && npm test || true)
