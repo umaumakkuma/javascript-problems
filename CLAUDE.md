@@ -1,0 +1,63 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## リポジトリの性質
+
+ビルドして動かすアプリケーションではなく、**JavaScript学習用の問題集**。学習者がフォークして回答を記述し、プッシュして提出する形式。コンテンツ・コメント・ドキュメントはすべて日本語で書く。
+
+カテゴリ07以降のコンテンツは [JavaScript Primer](https://jsprimer.net/)（jsprimer）に準拠している。問題を追加・改修する際はjsprimerの該当章と整合させ、問題コメントに【参考】として章のURLを記載する。
+
+- `basic/` — 穴埋め問題90問（18カテゴリ × 5問）。01〜06は入門編、07〜18はjsprimer第一部準拠
+- `advanced/` — jsprimer第二部準拠の実技課題3本（01-ajaxapp / 02-nodecli / 03-todoapp）。複数ファイル構成のアプリを段階的に完成させる
+
+## 最重要の制約: 解答をコミットしない
+
+リポジトリには**未回答のテンプレートのみ**をコミットする。回答欄・TODO箇所は空のまま保つこと。動作検証で模範解答を注入した場合は、検証後に必ずテンプレート状態へ復元する（scratchpadにバックアップを取ってから注入する）。
+
+## よく使うコマンド
+
+```bash
+# basic/ の問題を実行（未回答でもクラッシュせず ❌ エラー案内が出るのが正常）
+node basic/07-data-types-literals/problem1.js
+
+# advanced/02-nodecli のテスト（初回は npm install が必要）
+cd advanced/02-nodecli && npm install && npm test
+node main.js sample.md          # CLIの手動実行（--gfm フラグあり）
+
+# advanced/03-todoapp のテスト（依存なし、node --test のみ）
+cd advanced/03-todoapp && npm test
+
+# ブラウザ課題（01-ajaxapp / 03-todoapp）はローカルサーバー経由で確認
+cd advanced/01-ajaxapp && npx serve .
+```
+
+単一テストの実行: `node --test test/md2html-test.js` のようにファイルを指定する（テストランナーはNode.js組み込みの `node:test`、外部フレームワーク不使用）。
+
+## basic/ の問題ファイルの規約
+
+全問題が同一構造を持つ。新規問題もこの構造に従うこと:
+
+1. **ヘッダーコメント**: `カテゴリ名 / 問題N: タイトル` +【課題】【要求事項】【参考】(jsprimerのURL)【目安時間】
+2. **回答欄**: `// ========== ここから回答を記述 ==========` 〜 `// ========== ここまで回答を記述 ==========` のマーカーで囲み、中身は `// ここに回答を記述してください` のみ
+3. **動作確認コード**: `変更不要` と明記し、try-catchで囲む。回答済みなら期待値をコメントで示しつつ `✅`、未回答なら `❌ エラー:` を出力する。**未回答状態で実行してもプロセスがクラッシュしないこと**（非同期の問題は動作確認コード側でawait+try-catchする）
+
+## advanced/ の課題の規約
+
+- 学習者が書く箇所は `TODO(StepN)` コメントで明示し、実装手順をコメント内に具体的に書く。完成済みで触らないコードには `変更不要` と明記する
+- 各ステップをjsprimerの1つの章に対応付け、課題ごとのREADMEにステップ手順・動作確認方法を記載する
+- テストは学習者の実装対象モジュールに対する自動採点として機能させる。未回答状態でfailし、正しい実装でpassすること
+
+## 変更時の検証手順
+
+1. 未回答状態の全対象ファイルを実行し、クラッシュしないことを確認
+2. 模範解答を一時注入して期待値どおり動作する（テストがpassする）ことを確認
+3. テンプレートへ復元し、`git status` がクリーン（意図した差分のみ）であることを確認
+
+## ライセンス表記
+
+jsprimer由来のコンテンツには出典表記が必要: 文章は CC BY 4.0（© azu, Suguru Inatomi）、ソースコードは MIT。表記は `basic/README.md` と `advanced/README.md` の末尾にある。jsprimerのリポジトリは `js-primer/js-primer`（旧 `asciidwango/js-primer` はリダイレクト）で、ライセンスファイルは `LICENSE-MIT` / `LICENSE-CC-BY` に分かれている。
+
+## ドキュメント更新
+
+コンテンツの追加・変更時は `CHANGELOG.md` に記録し、問題数やカテゴリ構成が変わった場合は該当する `README.md`（`basic/` / `advanced/`）の問題数・目安時間・カテゴリ一覧も更新する。
