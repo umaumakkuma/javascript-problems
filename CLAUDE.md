@@ -18,7 +18,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 カテゴリ07以降のコンテンツは [JavaScript Primer](https://jsprimer.net/)（jsprimer）に準拠している。問題を追加・改修する際はjsprimerの該当章と整合させ、問題コメントに【参考】として章のURLを記載する。
 
-- `basic/` — 穴埋め問題105問（21カテゴリ × 5問）。01〜06は入門編、07〜21はjsprimer第一部準拠
+- `basic/` — 穴埋め問題105問（21カテゴリ × 5問）。01〜06は入門編、07〜21はjsprimer第一部準拠。`00-tutorial/` は使い方に慣れるための練習問題で、**唯一、回答済みの状態で配布し、check.jsの集計対象外**（この2点を崩さないこと）
+- `docs/` — 学習者向けの補助ドキュメント（エラーメッセージの読み方ガイドなど）
 - `advanced/` — jsprimer第二部準拠の実技課題3本（01-ajaxapp / 02-nodecli / 03-todoapp）。複数ファイル構成のアプリを段階的に完成させる
 
 ## 最重要の制約: 解答をコミットしない
@@ -58,7 +59,7 @@ cd advanced/01-ajaxapp && npx serve .
 例外・注意点:
 
 - `21-es-modules` のみ `.mjs` 形式（import/exportをNodeで動かすため）。提供モジュールは `lib/` に置き、`check.js` の走査対象（`problem数字.js|mjs`）に含めない命名にする。ESMはstrict modeなので、非strict前提の問題（`20-wrapper-objects/problem4` のプリミティブへのプロパティ代入など）は `.js` でしか成立しない
-- `03-dom-manipulation` などブラウザ向け問題のNode実行はモックのデモを動かすだけで、**回答の正誤に関係なく✅を表示する**。`check.js` はこれを検出して📝（手動確認）に分類している。新規のブラウザ向け問題でこの形式を踏襲する場合、出力に「ブラウザ環境で実行」の文言を含めること
+- `03-dom-manipulation` はブラウザで動作確認する。各問題に対応する `problemN.html`（と目次の `index.html`）があり、動作確認コードはブラウザ実行時にDOMの実状態を検証して✅/❌を出す。Node実行時は案内メッセージのみ表示し、✅/❌を出さない（`check.js` は出力中の「ブラウザ環境で実行」で📝に分類する。新規のブラウザ向け問題もこの文言を含めること）。かつて存在したNode用モック分岐は「回答と無関係に✅を表示し、模範解答も含んでいた」ため撤去済み — 復活させないこと
 
 ## advanced/ の課題の規約
 
