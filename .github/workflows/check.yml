@@ -4,7 +4,8 @@
 #   フォークへのpushでも動作する（フォーク側でActionsの有効化が必要）。
 #   未回答があっても失敗にはせず、回答のクラッシュ（構文エラー等）のみ赤にする。
 # - template-integrity: 本体リポジトリ保守用。未回答テンプレートが壊れて
-#   いないこと・解答がコミットされていないことを Node 20/22/24 で検証する。
+#   いないこと・解答がコミットされていないことを、サポート下限〜最新の
+#   Node 22/24 で検証する（Node 20は2026年4月にEOLとなったため対象外）。
 name: 採点チェック
 
 on:
@@ -34,6 +35,8 @@ jobs:
             echo '```'
             echo ""
             echo "> ❌は未回答・誤答、📝は手動確認の問題です。💥（クラッシュ）があるときだけ、このジョブは失敗になります。"
+            echo ">"
+            echo "> 採点はNode.js 22（サポート下限）で実行しています。ローカルがもっと新しいNode.jsの場合、新バージョン限定の機能を使った回答は「ローカルでは✅なのにここでは❌/💥」になることがあります。"
           } >> "$GITHUB_STEP_SUMMARY"
           exit "$status"
 
@@ -83,7 +86,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20, 22, 24]
+        node-version: [22, 24]
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
