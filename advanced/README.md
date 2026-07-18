@@ -48,4 +48,4 @@ python3 -m http.server 3000  # Pythonが入っている場合
 
 ---
 
-本課題は [JavaScript Primer](https://jsprimer.net/)（文章: © azu, Suguru Inatomi / [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)、ソースコード: [MITライセンス](https://github.com/asciidwango/js-primer/blob/master/LICENSE)）を元に作成しています。
+本課題は [JavaScript Primer](https://jsprimer.net/)（文章: © azu, Suguru Inatomi / [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)、ソースコード: [MITライセンス](https://github.com/js-primer/js-primer/blob/master/LICENSE-MIT)）を元に作成しています。
